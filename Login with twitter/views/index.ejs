@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <% if(user){ %>
+    <p>Hello <%=user.username%>
+    </p>
+    <img src="<%=user.photos[0].value%>" />
+    <% } else { %>
+      <a href="/twitter/login">Login using twitter!</a>
+      <% } %>
+        <br><br>
+        <button onclick=submits()>Logout</button>
+</body>
+<script>
+  var submits = () => {
+    window.location = '/logout'
+  }
+</script>
+
+</html>
