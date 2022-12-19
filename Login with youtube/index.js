@@ -50,6 +50,6 @@ app.get("/search", async (req, res) => {
   }
 });
 
-app.listen(8000, () => {
+app.listen(6004, () => {
   console.log('Server is up and running at the port 8000')
 })
