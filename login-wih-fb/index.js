@@ -26,6 +26,6 @@ app.get('/logout', (req, res) => {
   res.send('user logout');
 })
 
-app.listen(8000, () => {
+app.listen(6005, () => {
   console.log('Serve is up and running at the port 8000')
 })

@@ -57,6 +57,6 @@ app.get("/logout", (req, res) => {
     });
 });
 
-app.listen(3000, () => {
+app.listen(6003, () => {
     console.log('Server is up and running at the port 3000')
 })
