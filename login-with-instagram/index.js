@@ -43,6 +43,6 @@ app.get('/auth/instagram/callback',
     });
 
 
-app.listen(3002, () => {
+app.listen(6005, () => {
     console.log("server is started");
 });
