@@ -68,6 +68,6 @@ app.get('/logout', function (req, res) {
   });
 });
 
-app.listen(3002, () => {
+app.listen(6001, () => {
   console.log("server is started");
 });
