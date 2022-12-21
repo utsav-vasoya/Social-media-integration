@@ -13,9 +13,14 @@ var app = express();
 app.use(cookieParser());
 app.use(bp.json());
 app.use(express.urlencoded({ extended: true }));
-mongoose.connect("mongodb://localhost:27017/google-auth", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+mongoose.connect("mongodb://127.0.0.1:27017/google-auth", {
+    useNewUrlParser: true
+}, (err) => {
+    if(err){
+        console.log(err);
+    }else{
+    console.log('Mongodb connected');}
+
 });
 
 
