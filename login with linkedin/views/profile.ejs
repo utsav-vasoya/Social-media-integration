@@ -32,19 +32,19 @@
                     <div class="card">
                         <div class="card-content blue lighten-3">
                             <span class="card-title white-text"><strong><i class="large material-icons"> <img style="border-radius: 400px;"
-                                            src="<%=user.photos[2].value%>" /></i>
+                                            src="<%=user.image%>" /></i>
                                 </strong></span>
                         </div>
 
                         <div class="card-action">
                             <h5><b>
-                                    <%= user.displayName %>
+                                    <%= user.display_name %>
                                 </b></h5>
-                            <p><strong>Linkedin id</strong>: <%= user.id %>
+                            <p><strong>Linkedin id</strong>: <%= user.profile_id %>
                             </p>
-                            <p><strong>Name</strong>: <%=user.displayName%>
+                            <p><strong>Name</strong>: <%=user.display_name%>
                             </p>
-                            <p> <strong>Email</strong>: <%= user.emails[0].value%>
+                            <p> <strong>Email</strong>: <%= user.email%>
                             </p>
                         </div>
                     </div>
