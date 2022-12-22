@@ -15,7 +15,7 @@ module.exports = function (passport) {
           } else {
             const newUser = new User({
               login_type: "google",
-              id: profile.id,
+              profile_id: profile.id,
               image: profile.photos[0].value,
               email: profile.emails[0].value,
               display_name: profile.displayName

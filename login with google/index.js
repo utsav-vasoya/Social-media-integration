@@ -8,12 +8,12 @@ require('./config/passport')(passport);
 const User = require('./models/User');
 const bcrypt = require("bcryptjs");
 const bp = require("body-parser");
-const PORT = 6000;
+const PORT = 3000;
 var app = express();
 app.use(cookieParser());
 app.use(bp.json());
 app.use(express.urlencoded({ extended: true }));
-mongoose.connect("mongodb://localhost:27017/google-auth", {
+mongoose.connect("mongodb://127.0.0.1:27017/google-auth", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }, (err) => {
@@ -44,6 +44,10 @@ app.get('/auth/google/callback', passport.authenticate('google', { session: fals
     }
 })
 
+app.get('/logout', auth.verifyToken, (req, res) => {
+    res.clearCookie("auth")
+    res.redirect('/auth/google');
+})
 app.post("/register-user", async (req, res) => {
     const { display_name, email, password } = req.body;
     if (!display_name || !email || !password) {
