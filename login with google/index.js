@@ -8,19 +8,20 @@ require('./config/passport')(passport);
 const User = require('./models/User');
 const bcrypt = require("bcryptjs");
 const bp = require("body-parser");
-const PORT = 3000;
+const PORT = 6000;
 var app = express();
 app.use(cookieParser());
 app.use(bp.json());
 app.use(express.urlencoded({ extended: true }));
 mongoose.connect("mongodb://127.0.0.1:27017/google-auth", {
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 }, (err) => {
-    if(err){
+    if (err) {
         console.log(err);
-    }else{
-    console.log('Mongodb connected');}
-
+    } else {
+        console.log("db is connected");
+    }
 });
 
 

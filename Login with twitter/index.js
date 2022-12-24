@@ -7,8 +7,8 @@ var Strategy = require('passport-twitter').Strategy;
 var session = require('express-session');
 const ejs = require('ejs');
 passport.use(new Strategy({
-    consumerKey: '6a9csCvUaMTx9c63LnWHL8taI',
-    consumerSecret: 'avlRHyydSyPjzOdzMtH5vJx8t31zg7CbJRqudpqEVPuF7YcpQZ',
+    consumerKey: '',
+    consumerSecret: '',
     callbackURL: 'http://localhost:3000/twitter/return'
 }, function (token, tokenSecret, profile, callback) {
     return callback(null, profile);
@@ -57,6 +57,6 @@ app.get("/logout", (req, res) => {
     });
 });
 
-app.listen(3000, () => {
+app.listen(6003, () => {
     console.log('Server is up and running at the port 3000')
 })
