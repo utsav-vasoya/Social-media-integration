@@ -1,15 +1,23 @@
 const express = require("express");
 const expressSession = require("express-session");
 const passport = require("passport");
-const LinkedInStrategy = require("passport-linkedin-oauth2").Strategy;
+const jwt = require("jsonwebtoken")
+const mongoose = require('mongoose');
+const auth = require("./config/auth");
+var cookieParser = require('cookie-parser')
 
 const app = express();
+app.use(cookieParser());
 app.set('view engine', 'ejs');
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-passport.deserializeUser((user, done) => {
-  done(null, user);
+mongoose.connect("mongodb://127.0.0.1:27017/linkedin", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}, (err) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("db is connected");
+  }
 });
 
 app.use(expressSession({ secret: "session_secret" }));
@@ -17,53 +25,39 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-passport.use(
-  new LinkedInStrategy(
-    {
-      clientID: "77k4jjjwmlajne",
-      clientSecret: "YwN17LKoHqJIK8V0",
-      callbackURL: "http://localhost:3002/auth/linkedin/callback",
-      scope: ["r_emailaddress", "r_liteprofile"],
-    },
-    (accessToken, refreshToken, profile, done) => {
-      return done(null, profile);
-    }
-  )
-);
+require('./config/passport')(passport);
 
 app.get('/', function (req, res) {
   res.render('index.ejs');
 });
 
-app.get('/profile', isLoggedIn, function (req, res) {
+app.get('/profile', auth.verifyToken, function (req, res) {
   res.render('profile.ejs', {
-    user: req.user
+    user: req.user.user
   });
 });
 
-app.get(
-  "/auth/linkedin",
-  passport.authenticate("linkedin", { scope: ['r_emailaddress', 'r_liteprofile'] })
-);
+app.get("/auth/linkedin", passport.authenticate("linkedin", { scope: ['r_emailaddress', 'r_liteprofile'] }));
 
 
-app.get(
-  "/auth/linkedin/callback",
-  passport.authenticate("linkedin", {
-    successRedirect: "/profile",
-    failureRedirect: "/login",
-  })
-);
+app.get("/auth/linkedin/callback", passport.authenticate("linkedin", { session: false }), (req, res, next) => {
+  if (req.isAuthenticated()) {
+    jwt.sign({ user: req.user }, "secretKey", { expiresIn: "1h" }, (err, token) => {
+      if (err) {
+        return res.json({ token: null });
+      }
+      res.cookie('auth', token);
+      res.redirect("/profile");
+    })
+  } else {
+    res.send('Unauthorized');
+  }
+});
 
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated())
-    return next();
-  res.redirect('/');
-}
-app.get('/logout', function (req, res) {
+app.get('/logout', auth.verifyToken, function (req, res) {
   req.logout(req.user, async err => {
     if (err) return next(err);
+    res.clearCookie("auth")
     res.redirect('/');
   });
 });
