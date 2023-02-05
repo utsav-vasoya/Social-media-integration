@@ -6,6 +6,7 @@ var passport = require('passport');
 var Strategy = require('passport-twitter').Strategy;
 var session = require('express-session');
 const ejs = require('ejs');
+const isLoggedIn = require('./auth');
 passport.use(new Strategy({
     consumerKey: '',
     consumerSecret: '',
@@ -36,7 +37,7 @@ app.get('/', function (req, res) {
     res.render('home.ejs');
 })
 
-app.get('/login', function (req, res) {
+app.get('/login', isLoggedIn, function (req, res) {
     res.render('index.ejs', { user: req.user });
 })
 
